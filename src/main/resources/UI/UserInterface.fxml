@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane prefHeight="620.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.UIController">
+   <center>
+      <TabPane fx:id="tp_Main" prefHeight="620.0" prefWidth="1113.0" stylesheets="@../css/appStyle.css" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab id="tConfigure" fx:id="tConfigure" closable="false" text="1. Обновить конфигурации">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="tab-pane">
+                     <children>
+                        <VBox layoutX="8.0" layoutY="14.0" prefHeight="311.0" prefWidth="588.0">
+                           <children>
+                              <HBox prefHeight="24.0" prefWidth="588.0">
+                                 <children>
+                                    <Label text="Длительность разрыва в минутах" />
+                                    <Slider fx:id="sl_break" blockIncrement="15.0" majorTickUnit="15.0" max="45.0" min="30.0" minorTickCount="0" onDragDetected="#changeBreakTime" onDragDone="#changeBreakTime" showTickLabels="true" snapToTicks="true" value="45.0" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="31.0" prefWidth="588.0">
+                                 <children>
+                                    <Label text="Проверить список хозяек касс">
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Button id="bHostessInfoOpen" fx:id="bHostessInfoOpen" mnemonicParsing="false" onAction="#openHostessInfo" text="Открыть файл настройки">
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <ToggleButton id="bHostessCommit" fx:id="bHostessCommit" contentDisplay="RIGHT" ellipsisString="" mnemonicParsing="false" onAction="#hostessConfirm" text="Нажмите для подтверждения">
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </ToggleButton>
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="10.0" prefHeight="31.0" prefWidth="588.0">
+                                 <children>
+                                    <Label text="Проверить список смен">
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Button id="bShiftsInfoOpen" fx:id="bShiftsInfoOpen" mnemonicParsing="false" onAction="#openShiftsInfo" text="Открыть файл настройки">
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <ToggleButton id="bShiftsCommit" fx:id="bShiftsCommit" contentDisplay="RIGHT" ellipsisString="" mnemonicParsing="false" onAction="#shiftsConfirm" text="Нажмите для подтверждения">
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </ToggleButton>
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="41.0" prefHeight="31.0" prefWidth="588.0">
+                                 <children>
+                                    <Label text="Файлы отчетов закрыты">
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <ToggleButton id="bClosedReportsCommit" fx:id="bClosedReportsCommit" contentDisplay="RIGHT" ellipsisString="" mnemonicParsing="false" onAction="#reportsConfirm" text="Нажмите для подтверждения">
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </ToggleButton>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab id="tUpload" fx:id="tUpload" text="2.Загрузите PDF смен">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="lbWeeksInPeriod" layoutX="257.0" layoutY="18.0" text="Подтвердите месяц" />
+                        <DatePicker id="dpMonthPicker" fx:id="dpMonthPicker" layoutX="14.0" layoutY="14.0" onAction="#dateInputed" prefHeight="25.0" prefWidth="148.0" showWeekNumbers="true" styleClass="date-picker" />
+                        <Button id="bMonthCofirm" fx:id="bMonthCofirm" disable="true" layoutX="181.0" layoutY="14.0" mnemonicParsing="false" onAction="#monthWeeksCalculate" text="Выбрать" />
+                        <VBox layoutX="14.0" layoutY="39.0" prefHeight="165.0" prefWidth="573.0">
+                           <children>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="bNormalTimeInput" promptText="168" text="168">
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <Label text="Введите норму часов для контракта 40 часов 5 дней">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="7.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="hbWeek1" prefHeight="20.0" prefWidth="573.0" visible="false">
+                                 <children>
+                                    <Label text="Загрузите неделю 1">
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Button id="bUploadWeek1" fx:id="bUploadWeek1" mnemonicParsing="false" onAction="#uploadWeekPdf" text="Загрузить">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Circle id="cUploadWeek1" fx:id="cUploadWeek1" fill="#ff1f1f" radius="13.0" stroke="BLACK" strokeType="INSIDE">
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                    </Circle>
+                                    <Label id="lUploadWeek1" fx:id="lUploadWeek1" text="Неделя не загружена">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="hbWeek2" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="573.0" visible="false">
+                                 <children>
+                                    <Label text="Загрузите неделю 2">
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Button id="bUploadWeek2" fx:id="bUploadWeek2" mnemonicParsing="false" onAction="#uploadWeekPdf" text="Загрузить">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Circle id="cUploadWeek2" fx:id="cUploadWeek2" fill="#ff1f1f" radius="13.0" stroke="BLACK" strokeType="INSIDE">
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                    </Circle>
+                                    <Label id="lUploadWeek2" fx:id="lUploadWeek2" text="Неделя не загружена">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="hbWeek3" layoutX="10.0" layoutY="35.0" prefHeight="20.0" prefWidth="573.0" visible="false">
+                                 <children>
+                                    <Label text="Загрузите неделю 3">
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Button id="bUploadWeek3" fx:id="bUploadWeek3" mnemonicParsing="false" onAction="#uploadWeekPdf" text="Загрузить">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Circle id="cUploadWeek3" fx:id="cUploadWeek3" fill="#ff1f1f" radius="13.0" stroke="BLACK" strokeType="INSIDE">
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                    </Circle>
+                                    <Label id="lUploadWeek3" fx:id="lUploadWeek3" text="Неделя не загружена">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="hbWeek4" layoutX="10.0" layoutY="60.0" prefHeight="20.0" prefWidth="573.0" visible="false">
+                                 <children>
+                                    <Label text="Загрузите неделю 4">
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Button id="bUploadWeek4" fx:id="bUploadWeek4" mnemonicParsing="false" onAction="#uploadWeekPdf" text="Загрузить">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Circle id="cUploadWeek4" fx:id="cUploadWeek4" fill="#ff1f1f" radius="13.0" stroke="BLACK" strokeType="INSIDE">
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                    </Circle>
+                                    <Label id="lUploadWeek4" fx:id="lUploadWeek4" text="Неделя не загружена">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="hbWeek5" layoutX="10.0" layoutY="85.0" prefHeight="20.0" prefWidth="573.0" visible="false">
+                                 <children>
+                                    <Label text="Загрузите неделю 5">
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Button id="bUploadWeek5" fx:id="bUploadWeek5" mnemonicParsing="false" onAction="#uploadWeekPdf" text="Загрузить">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Circle id="cUploadWeek5" fx:id="cUploadWeek5" fill="#ff1f1f" radius="13.0" stroke="BLACK" strokeType="INSIDE">
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                    </Circle>
+                                    <Label id="lUploadWeek5" fx:id="lUploadWeek5" text="Неделя не загружена">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="hbWeek6" layoutX="10.0" layoutY="110.0" prefHeight="20.0" prefWidth="573.0" visible="false">
+                                 <children>
+                                    <Label text="Загрузите неделю 6">
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Button id="bUploadWeek6" fx:id="bUploadWeek6" mnemonicParsing="false" onAction="#uploadWeekPdf" text="Загрузить">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Circle id="cUploadWeek6" fx:id="cUploadWeek6" fill="#ff1f1f" radius="13.0" stroke="BLACK" strokeType="INSIDE">
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                    </Circle>
+                                    <Label id="lUploadWeek6" fx:id="lUploadWeek6" text="Неделя не загружена">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="hbStartCalculate" layoutX="10.0" layoutY="200.0" prefHeight="20.0" prefWidth="573.0">
+                                 <children>
+                                    <Button id="bCodeShifts" fx:id="bCodeShifts" mnemonicParsing="false" onAction="#generateMonthShifts" text="Выполнить кодирование смен" visible="false">
+                                       <HBox.margin>
+                                          <Insets left="150.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab id="tQuickStatistic" fx:id="tQuickStatistic" text="3. Быстрая статистика">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <TableView id="tvShifts" fx:id="tvShifts" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                          <columns>
+                            <TableColumn fx:id="ctv_number" prefWidth="75.0" text="Номер хк" />
+                            <TableColumn fx:id="ctv_Surname" prefWidth="116.00003814697266" text="Фамилия" />
+                              <TableColumn fx:id="ctv_Name" prefWidth="113.59994506835938" text="Имя" />
+                              <TableColumn fx:id="ctv_Manager" prefWidth="76.79998779296875" text="Менеджер" />
+                              <TableColumn fx:id="ctv_Contract" prefWidth="68.800048828125" text="Контракт" />
+                              <TableColumn fx:id="ctv_dayOffs" prefWidth="56.799957275390625" text="Вых дн." />
+                              <TableColumn fx:id="ctv_workDays" prefWidth="55.199981689453125" text="Раб. дн." />
+                              <TableColumn fx:id="ctv_OTdays" prefWidth="55.199981689453125" text="ОТ дн." />
+                              <TableColumn fx:id="ctv_AbnormalDays" prefWidth="55.199981689453125" text="Ан дн." />
+                              <TableColumn fx:id="ctv_SapHours" prefWidth="79.199951171875" text="Часов SAP" />
+                              <TableColumn fx:id="ctv_SaturneHours" prefWidth="99.2000732421875" text="Часов Saturne" />
+                              <TableColumn fx:id="ctv_ManualHours" minWidth="0.0" prefWidth="114.40020751953125" text="Ручная корректировка" visible="false" />
+                              <TableColumn fx:id="ctv_NormalHours" onEditCommit="#acceptHour" prefWidth="75.0" text="Норма часов" />
+                          </columns>
+                        </TableView>
+                     </center>
+                     <bottom>
+                        <HBox prefHeight="28.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Button id="bNormalize" fx:id="bNormalize" mnemonicParsing="false" onAction="#normalizeHours" text="Привести к Saturne">
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="bNornalizeMonth" mnemonicParsing="false" onAction="#normaliseMonth" text="Привести к норме часов">
+                                 <opaqueInsets>
+                                    <Insets left="5.0" />
+                                 </opaqueInsets>
+                                 <HBox.margin>
+                                    <Insets left="50.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button id="bNextReports" fx:id="bNextReports" mnemonicParsing="false" onAction="#nextPage" text="Перейти к сохранию отчетов">
+                                 <HBox.margin>
+                                    <Insets left="80.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </bottom>
+                  </BorderPane>
+               </content>
+            </Tab>
+            <Tab id="tReports" fx:id="tReports" disable="true" text="4. Сохранение отчетов">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <HBox prefHeight="27.0" prefWidth="600.0">
+                           <children>
+                              <HBox prefHeight="27.0" prefWidth="600.0">
+                                 <children>
+                                    <Button id="bSaveShiftCodes" fx:id="bSaveShiftCodes" mnemonicParsing="false" onAction="#saveShiftCodes" text="Сохранить кодировку смен">
+                                       <HBox.margin>
+                                          <Insets left="180.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets top="10.0" />
+                                 </HBox.margin>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="10.0" prefHeight="27.0" prefWidth="600.0">
+                           <children>
+                              <Button id="bUseStatistic" fx:id="bAbsentReport" mnemonicParsing="false" onAction="#saveAbsentReport" text="Сохранить отчет отсутсвия">
+                                 <HBox.margin>
+                                    <Insets left="180.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="10.0" prefHeight="27.0" prefWidth="600.0">
+                           <children>
+                              <HBox prefHeight="27.0" prefWidth="600.0">
+                                 <children>
+                                    <Button id="bNonFoundShifts" fx:id="bSaveNonFound" mnemonicParsing="false" onAction="#saveNonFoundShifts" text="Сохранить ненайденные смены">
+                                       <HBox.margin>
+                                          <Insets left="180.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets top="10.0" />
+                                 </HBox.margin>
+                              </HBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </center>
+   <bottom>
+      <Pane prefHeight="0.0" prefWidth="931.0" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>
