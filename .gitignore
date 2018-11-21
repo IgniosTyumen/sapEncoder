@@ -1,0 +1,10 @@
+.idea/*
+_artifacts_temp/*
+august/*
+ekb/*
+jre/*
+lib/*
+target/*
+*.iml
+*.jar
+*.zip
