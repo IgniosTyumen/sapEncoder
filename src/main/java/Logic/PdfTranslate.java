@@ -65,7 +65,7 @@ public class PdfTranslate {
             PDDocument doc = PDDocument.load(pdfFile);
             PDFTextStripper s = new PDFTextStripper();
             String content = s.getText(doc);
-            String[] split = content.split("\n");
+            String[] split = content.split("\r");
             while (cursor < split.length) {
                 String[] dataBlock = nextBlock(split, cursor);
                 if (dataBlock != null) {
@@ -114,9 +114,12 @@ doc.close();
 
     private static WorkerSchedule translateParsedBlock(String[] data) {
         String[] parsingMain = data[0].split(" ");
+        int len = data.length-1;
         String[] parsingTime = data[data.length - 1].split(" ");
-        if (!parsingTime[0].contains("ч")) {
-            parsingTime = data[data.length - 2].split(" ");
+        while (!parsingTime[0].contains("ч") && len > 0) {
+            len--;
+            parsingTime = data[len].split(" ");
+
         }
         WorkerSchedule newHostess = new WorkerSchedule();
         int lines = data.length;
@@ -125,19 +128,22 @@ doc.close();
         for (int i = 0; i < parsingTime.length - 1; i++) {
             String resolver = parsingTime[i].replace('ч', ':');
             resolver.replaceAll(" ", "");
+            resolver = resolver.replaceAll("(\\n)", "");
             if (resolver.length() == 4) resolver = "0" + resolver;
             LocalTime time = null;
             String regex = "([01]?[0-9]|2[0-3]):[0-5][0-9]";
             Matcher m = Pattern.compile(regex).matcher(resolver);
-            if (m.find()) time = LocalTime.parse(m.group(0));
+            if (m.find()) {time = LocalTime.parse(m.group(0));
             queue.add(time);
-        }
+        }}
         boolean opened = false;
         LocalTime search1 = null;
         LocalTime search2 = null;
         LocalTime search3 = null;
         LocalTime search4 = null;
+
         for (int i = 0; i < parsingMain.length; i++) {
+            parsingMain[i] = parsingMain[i].replaceAll("(\\n)", "");
             if (parsingMain[i].contains("[")) {
                 newHostess.setNumber(parsingMain[0].substring(1, 4));
                 continue;
@@ -195,6 +201,7 @@ doc.close();
                     if (!opened) {
                         String resolver = parsingMain[i].replace('ч', ':');
                         resolver.replaceAll(" ", "");
+                        resolver.replaceAll("(\\n)", "");
                         if (resolver.length() == 4) resolver = "0" + resolver;
                         LocalTime time = null;
                         String regex = "([01]?[0-9]|2[0-3]):[0-5][0-9]";
@@ -205,12 +212,14 @@ doc.close();
                         }
                         if (newHostess.getSheduleInDayOfWeek(day).getBeginningTimeStr() == null) {
                             opened = true;
-                            LocalTime polled = queue.poll();
-                            search1 = time.plusHours(polled.getHour()).plusMinutes(polled.getMinute()).plusMinutes(BreakTime.getBreakTime());
-                            search2 = time.plusHours(polled.getHour()).plusMinutes(polled.getMinute()).plusMinutes(BreakTime.getBreakTime()+15);
-                            search3 = time.plusHours(polled.getHour()).plusMinutes(polled.getMinute()).plusMinutes(BreakTime.getBreakTime()-15);
-                            search4 = time.plusHours(polled.getHour()).plusMinutes(polled.getMinute());
-                            newHostess.getSheduleInDayOfWeek(day).setBeginningTimeStr(time);
+                            if (queue.size()>0) {
+                                LocalTime polled = queue.poll();
+                                search1 = time.plusHours(polled.getHour()).plusMinutes(polled.getMinute()).plusMinutes(BreakTime.getBreakTime());
+                                search2 = time.plusHours(polled.getHour()).plusMinutes(polled.getMinute()).plusMinutes(BreakTime.getBreakTime() + 15);
+                                search3 = time.plusHours(polled.getHour()).plusMinutes(polled.getMinute()).plusMinutes(BreakTime.getBreakTime() - 15);
+                                search4 = time.plusHours(polled.getHour()).plusMinutes(polled.getMinute());
+                                newHostess.getSheduleInDayOfWeek(day).setBeginningTimeStr(time);
+                            }
                         }
 
                         continue;
